@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
+import org.testng.Assert;
 
+import com.google.gson.Gson;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 
 import restAPIFramework.com.rest.requestpojo.Address;
 import restAPIFramework.com.rest.requestpojo.CreatePerson;
+import restAPIFramework.com.rest.responsepojo.CreatePersonResponse;
 
 public class Service {
 	List<JSONObject> list;
@@ -46,7 +49,23 @@ public class Service {
 	public static void main(String[] args) {
 		Service service = new Service();
 		Response data = service.createPersionAPI("name", "surname", "city", "landmark", "state", "560072");
-		System.out.println(data.asString());
+		
+		if(data.getStatusCode() == 200){
+
+			System.out.println(data.asString());
+
+			Gson gson = new Gson();
+			CreatePersonResponse createPersonResponse = gson.fromJson(data.asString(), CreatePersonResponse.class);
+
+			System.out.println(createPersonResponse.getResponse().get(0).getAddress().getCity());
+			System.out.println(createPersonResponse.getResponse().get(0).getName());
+			System.out.println(createPersonResponse.getResponse().get(0).getSurname());
+			System.out.println(createPersonResponse.getResponse().get(0).getAddress().getLandmark());
+
+			Assert.assertEquals(createPersonResponse.getResponse().get(0).getAddress().getCity(), "city");
+
+			Assert.assertEquals(createPersonResponse.getResponse().get(0).getName(), "name");
+		}
 	}
 
 }
