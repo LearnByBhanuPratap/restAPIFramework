@@ -18,6 +18,16 @@ import restAPIFramework.com.rest.responsepojo.CreatePersonResponse;
 public class Service {
 	List<JSONObject> list;
 	
+	/**
+	 * This API will create Person
+	 * @param name
+	 * @param surname
+	 * @param city
+	 * @param landmark
+	 * @param state
+	 * @param zipcode
+	 * @return
+	 */
 	public Response createPersionAPI(String name,String surname, String city,String landmark, String state, String zipcode){
 		
 		CreatePerson createPerson = new CreatePerson();
@@ -43,6 +53,20 @@ public class Service {
 		requestSpecification.body(list.toString());
 		System.out.println("end point url.."+ServiceURL.createPersonurl);
 		Response response = requestSpecification.post(ServiceURL.createPersonurl);
+		return response;
+	}
+	
+	/**
+	 * This API will return state details
+	 * @return
+	 */
+	public Response getStateDetails(){
+		RequestSpecification requestSpecification = RestAssured.given();
+		requestSpecification.contentType("application/json");
+		requestSpecification.accept("application/json");
+		requestSpecification.body(list.toString());
+		System.out.println("end point url.."+ServiceURL.createPersonurl);
+		Response response = requestSpecification.get(ServiceURL.getStateDetails);
 		return response;
 	}
 	
