@@ -34,7 +34,7 @@ public class GetStateDetailsTest extends TestBase{
 	public void getStateDetailsAPITest(){
 		service = new Service();
 		response =  service.getStateDetails();
-		
+		System.out.println(response.asString());
 		if(response.getStatusCode() == 200){
 			System.out.println(response.asString());
 			Gson gson = new Gson();
@@ -42,12 +42,11 @@ public class GetStateDetailsTest extends TestBase{
 			
 			List<GetStateDetail> stateData = getStateDetailResponse.getGetStateDetails();
 			list = new ArrayList<Object>();
-			for(int i =0; i<stateData.size(); i++){
- 				list.add(stateData.get(i));
+			for(int i = 0; i<stateData.size(); i++){
+				System.out.println(stateData.get(i).getName());
+ 				list.add(stateData.get(i).getName());
 			}
 			Assert.assertEquals(list, testData);
-			
-	
 		}
 		else{
 			Assert.assertTrue(false, response.asString());

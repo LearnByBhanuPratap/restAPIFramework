@@ -13,6 +13,7 @@ import com.jayway.restassured.specification.RequestSpecification;
 
 import restAPIFramework.com.rest.requestpojo.Address;
 import restAPIFramework.com.rest.requestpojo.CreatePerson;
+import restAPIFramework.com.rest.requestpojo.UpdatePersonPojo;
 import restAPIFramework.com.rest.responsepojo.CreatePersonResponse;
 
 public class Service {
@@ -64,9 +65,46 @@ public class Service {
 		RequestSpecification requestSpecification = RestAssured.given();
 		requestSpecification.contentType("application/json");
 		requestSpecification.accept("application/json");
-		requestSpecification.body(list.toString());
 		System.out.println("end point url.."+ServiceURL.createPersonurl);
 		Response response = requestSpecification.get(ServiceURL.getStateDetails);
+		return response;
+	}
+	
+	/**
+	 * This API will update person details
+	 * @param name
+	 * @param surname
+	 * @param city
+	 * @param landmark
+	 * @param state
+	 * @param zipcode
+	 * @return
+	 */
+	public Response updatePersonDetail(String name,String surname, String city,String landmark, String state, String zipcode){
+		UpdatePersonPojo updatePersonPojo = new UpdatePersonPojo();
+		updatePersonPojo.setName(name);
+		updatePersonPojo.setSurname(surname);
+		
+		Address address = new Address();
+		updatePersonPojo.setAddress(address);
+		address.setCity(city);
+		address.setLandmark(landmark);
+		address.setState(state);
+		address.setZipcode(zipcode);
+		updatePersonPojo.setAddress(address);
+		
+		JSONObject jsonObj = new JSONObject(updatePersonPojo);
+		System.out.println("json payload..");
+		list = new ArrayList<JSONObject>();
+		list.add(jsonObj);
+		System.out.println(list);
+		
+		RequestSpecification requestSpecification = RestAssured.given();
+		requestSpecification.contentType("application/json");
+		requestSpecification.accept("application/json");
+		requestSpecification.body(list.toString());
+		System.out.println("end point url.."+ServiceURL.updatePersonDetails);
+		Response response = requestSpecification.put(ServiceURL.updatePersonDetails);
 		return response;
 	}
 	
